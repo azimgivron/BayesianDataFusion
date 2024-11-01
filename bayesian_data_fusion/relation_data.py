@@ -1,8 +1,9 @@
-import numpy as np
-from math import isnan
-import pandas as pd
 from concurrent.futures import ProcessPoolExecutor
-from scipy.sparse import diags, find, csr_matrix
+from math import isnan
+
+import numpy as np
+import pandas as pd
+from scipy.sparse import csr_matrix, diags, find
 from sklearn.model_selection import train_test_split
 
 

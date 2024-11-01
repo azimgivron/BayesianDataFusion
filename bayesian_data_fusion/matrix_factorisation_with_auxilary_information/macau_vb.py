@@ -1,7 +1,8 @@
-import numpy as np
-from scipy.sparse import coo_matrix
 from time import time
+
+import numpy as np
 from numpy.linalg import inv
+from scipy.sparse import coo_matrix
 
 
 class VBModel:

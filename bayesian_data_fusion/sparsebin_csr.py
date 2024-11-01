@@ -1,5 +1,6 @@
-import numpy as np
 from concurrent.futures import ProcessPoolExecutor, wait
+
+import numpy as np
 
 
 class SparseBinMatrixCSR:

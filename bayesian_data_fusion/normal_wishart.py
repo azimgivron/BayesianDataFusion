@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.linalg import cholesky
-from scipy.stats import wishart, multivariate_normal
+from scipy.stats import multivariate_normal, wishart
 
 
 class NormalWishart:

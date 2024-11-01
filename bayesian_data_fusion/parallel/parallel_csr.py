@@ -1,13 +1,12 @@
+import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import numpy as np
 from scipy.sparse import csr_matrix
-import os
 
 
 class ParallelSparseMatrix:
-    """
-    A class to represent a parallel sparse matrix.
+    """A class to represent a parallel sparse matrix.
 
     Attributes:
     F : Any
@@ -23,9 +22,10 @@ class ParallelSparseMatrix:
         self.refs = []
         self.procs = procs
 
+
 def psparse(F, procs):
-    """
-    Creates a ParallelSparseMatrix by distributing the workload across specified processes.
+    """Creates a ParallelSparseMatrix by distributing the workload across specified
+    processes.
 
     Parameters:
     F : Any
@@ -48,27 +48,28 @@ def psparse(F, procs):
 
     return parallel_matrix
 
+
 class ParallelSparseMatrix:
     def __init__(self, F, refs, procs):
-        self.F = F          # The sparse matrix
-        self.refs = refs    # References for parallel execution
+        self.F = F  # The sparse matrix
+        self.refs = refs  # References for parallel execution
         self.procs = procs  # Process IDs
 
     def is_empty(self):
-        """ Checks if the sparse matrix is empty. """
+        """Checks if the sparse matrix is empty."""
         return self.F.size == 0
 
     def shape(self):
-        """ Returns the shape of the sparse matrix. """
+        """Returns the shape of the sparse matrix."""
         return self.F.shape
 
     def eltype(self):
-        """ Returns the element type of the sparse matrix. """
+        """Returns the element type of the sparse matrix."""
         return self.F.dtype
 
+
 def At_mul_B(A, B):
-    """
-    Overloaded function to handle various types of matrix operations.
+    """Overloaded function to handle various types of matrix operations.
 
     Parameters:
     - A: The first matrix, can be ParallelSparseMatrix or a standard numpy array.
@@ -91,6 +92,7 @@ def At_mul_B(A, B):
 
     else:
         raise TypeError("Unsupported types for At_mul_B: {}, {}".format(type(A), type(B)))
+
 
 class SparseMatrixCSR:
     def __init__(self, csc):
@@ -136,16 +138,21 @@ class SparseMatrixCSR:
             return 1
         return self.size()[d - 1]  # Adjust for zero-based index
 
+
 def imult(Fref, u):
     """Performs the operation A^T * u where A is fetched from Fref."""
     return At_mul_B(Fref.result(), u)
+
 
 def mult(Fref, u):
     """Performs the operation A * u where A is fetched from Fref."""
     Flocal = Fref.result()
     if Flocal.shape[1] != u.shape[0]:
-        raise ValueError(f"#columns of F({Flocal.shape[1]}) must equal number of rows of U({u.shape[0]}).")
+        raise ValueError(
+            f"#columns of F({Flocal.shape[1]}) must equal number of rows of U({u.shape[0]})."
+        )
     return Flocal @ u
+
 
 def nextidx(index):
     """Produces the next work item from the queue."""
@@ -153,9 +160,9 @@ def nextidx(index):
     index[0] += 1
     return idx
 
+
 def pmult(nrows, Frefs, U, procs, mfun):
-    """
-    Parallel multiplication function.
+    """Parallel multiplication function.
 
     Parameters:
     nrows : int
@@ -186,6 +193,8 @@ def pmult(nrows, Frefs, U, procs, mfun):
                 idx = nextidx(index)
                 if idx > n:
                     break
-                results[:, idx - 1] = mfun(Frefs[p], U[:, idx - 1])  # Adjust for zero-based indexing
+                results[:, idx - 1] = mfun(
+                    Frefs[p], U[:, idx - 1]
+                )  # Adjust for zero-based indexing
 
     return results

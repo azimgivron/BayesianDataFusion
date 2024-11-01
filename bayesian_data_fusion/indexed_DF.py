@@ -233,7 +233,8 @@ class FastIDF:
         dim: int, Optional, specific dimension to get the size for.
 
         Returns:
-        tuple or int: The sizes of each dimension as a tuple if dim is None, otherwise the size of the specified dimension.
+        tuple or int: The sizes of each dimension as a tuple if dim is None,
+        otherwise the size of the specified dimension.
         """
         if dim is None:
             return tuple(len(i) for i in self.index)

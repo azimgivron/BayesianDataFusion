@@ -59,7 +59,8 @@ class SparseBinMatrixCSR:
         dim: int, Optional dimension (1 for rows, 2 for columns).
 
         Returns:
-        tuple or int: If dim is None, returns a tuple (m, n); if dim is specified, returns the size along that dimension.
+        tuple or int: If dim is None, returns a tuple (m, n); if dim is specified,
+        returns the size along that dimension.
         """
         if dim is None:
             return self.m, self.n
